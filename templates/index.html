@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALP Group Consultation Slots</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; line-height: 1.6; }
+        h1 { color: #333; }
+        .intro { margin-bottom: 30px; }
+        .date-group { margin-bottom: 20px; }
+        .date-title { font-weight: bold; font-size: 1.2em; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .slots { display: flex; flex-wrap: wrap; gap: 10px; }
+        .slot { padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; text-decoration: none; color: #333; }
+        .slot.available:hover { background-color: #f0f0f0; border-color: #999; }
+        .slot.booked { background-color: #eee; color: #999; cursor: not-allowed; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <div class="intro">
+        <h1>ALP Group Consultation Slots</h1>
+        <p>Select Your Session Slot — Please select an available 1-hour time slot for your ALP group coaching session with Denise. Each slot is allocated on a first-come, first-served basis and can only be reserved by one group. Once your group has agreed on a preferred time, we encourage you to secure the slot here ASAP. A calendar invite will be shared with you following your confirmed booking.</p>
+    </div>
+
+    {% for date, slots in grouped_slots.items() %}
+    <div class="date-group">
+        <div class="date-title">{{ date }}</div>
+        <div class="slots">
+            {% for slot in slots %}
+                {% if slot.is_booked %}
+                    <span class="slot booked">{{ slot.time_slot }}</span>
+                {% else %}
+                    <a href="{{ url_for('book', slot_id=slot.id) }}" class="slot available">{{ slot.time_slot }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <footer style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 10px; text-align: center;">
+        <a href="{{ url_for('admin') }}" style="color: #ccc; text-decoration: none; font-size: 0.8em;">Admin Panel</a>
+    </footer>
+</body>
+</html>
